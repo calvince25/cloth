@@ -74,7 +74,7 @@ export default function ProductDetail() {
 Please confirm availability.`)}`;
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 pt-24">
       <Helmet>
         <title>{product.name} | Buver Nairobi</title>
         <meta name="description" content={product.description} />

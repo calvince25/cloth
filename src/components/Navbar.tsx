@@ -34,15 +34,25 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [location.pathname]);
 
+  // Determine if current route requires a solid/dark navbar by default
+  const forceSolid = location.pathname.startsWith('/product') || location.pathname === '/login';
+  const shouldBeTransparent = !isScrolled && !forceSolid && !mobileOpen;
+
+  const textColor = shouldBeTransparent ? 'text-white' : 'text-secondary';
+  const logoColor = shouldBeTransparent ? 'text-white' : 'text-primary';
+  const mutedTextColor = shouldBeTransparent ? 'text-gray-200' : 'text-gray-500';
+
   return (
     <>
       <header
         className={cn(
-          'sticky top-0 z-40 w-full transition-all duration-300',
-          isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-2' : 'bg-white py-3'
+          'fixed top-0 z-50 w-full transition-all duration-300',
+          shouldBeTransparent 
+            ? 'bg-transparent py-5' 
+            : 'bg-white/95 backdrop-blur-md shadow-sm py-3'
         )}
       >
-        <div className="container mx-auto px-4 flex items-center justify-between">
+        <div className={cn("container mx-auto px-4 flex items-center justify-between", textColor)}>
           {/* Mobile Hamburger */}
           <button
             className="lg:hidden p-2"
@@ -53,7 +63,7 @@ export default function Navbar() {
           </button>
 
           {/* Logo */}
-          <Link to="/" className="text-3xl font-serif font-bold tracking-tighter">
+          <Link to="/" className={cn("text-3xl font-serif font-bold tracking-tighter", logoColor)}>
             Buver
           </Link>
 
@@ -64,8 +74,10 @@ export default function Navbar() {
                 key={link.name}
                 to={link.href}
                 className={cn(
-                  'text-sm font-medium uppercase tracking-widest hover:text-primary transition-colors',
-                  location.pathname === link.href ? 'text-primary' : 'text-secondary/70'
+                  'text-sm font-medium uppercase tracking-widest transition-colors',
+                  location.pathname === link.href 
+                    ? (shouldBeTransparent ? 'text-white font-bold' : 'text-primary') 
+                    : `${mutedTextColor} hover:opacity-75`
                 )}
               >
                 {link.name}
@@ -82,8 +94,10 @@ export default function Navbar() {
                   key={link.name}
                   to={link.href}
                   className={cn(
-                    'text-xs font-medium uppercase tracking-widest hover:text-primary transition-colors',
-                    location.pathname === link.href ? 'text-primary' : 'text-gray-400'
+                    'text-xs font-medium uppercase tracking-widest transition-colors',
+                    location.pathname === link.href 
+                      ? (shouldBeTransparent ? 'text-white font-bold' : 'text-primary') 
+                      : `${mutedTextColor} hover:opacity-75`
                   )}
                 >
                   {link.name}

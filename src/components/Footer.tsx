@@ -43,6 +43,7 @@ export default function Footer() {
               <li><a href="#" className="hover:text-white transition-colors">Shipping Policy</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Returns & Exchanges</a></li>
               <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+              <li><Link to="/login" className="text-gray-600 hover:text-gray-400 text-xs mt-2 inline-block transition-colors">Admin Panel</Link></li>
             </ul>
           </div>
 

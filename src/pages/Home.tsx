@@ -45,7 +45,7 @@ export default function Home() {
             loading="eager"
             decoding="async"
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-black/40" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -69,7 +69,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link to="/women">
-                <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-secondary rounded-none px-10 py-7 text-lg uppercase tracking-widest">
+                <Button size="lg" variant="outline" className="text-white border-2 border-white bg-transparent hover:bg-white hover:text-secondary rounded-none px-10 py-7 text-lg uppercase tracking-widest font-bold">
                   Women
                 </Button>
               </Link>
@@ -136,10 +136,10 @@ export default function Home() {
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                  <h3 className="text-4xl font-serif font-bold mb-4">{cat.name}</h3>
-                  <Button variant="outline" className="text-white border-white hover:bg-white hover:text-secondary rounded-none uppercase tracking-widest">
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-6 text-center">
+                  <h3 className="text-4xl font-serif font-bold mb-6">{cat.name}</h3>
+                  <Button variant="outline" className="text-white border-2 border-white bg-transparent hover:bg-white hover:text-secondary rounded-none px-8 py-5 text-sm uppercase tracking-widest font-bold">
                     Explore
                   </Button>
                 </div>
