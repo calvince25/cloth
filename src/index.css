@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  
+  --color-background: #FFFFFF;
+  --color-foreground: #060E1F;
+  
+  --color-primary: #F97316;
+  --color-primary-foreground: #FFFFFF;
+  
+  --color-secondary: #060E1F;
+  --color-secondary-foreground: #FFFFFF;
+  
+  --color-muted: #F1F5F9;
+  --color-muted-foreground: #64748B;
+  
+  --color-accent: #F1F5F9;
+  --color-accent-foreground: #0F172A;
+  
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #F8FAFC;
+  
+  --color-border: #E2E8F0;
+  --color-input: #E2E8F0;
+  --color-ring: #F97316;
+  
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+.markdown-body {
+  @apply prose prose-slate max-w-none;
+}
