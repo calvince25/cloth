@@ -125,7 +125,7 @@ export default function Home() {
             {[
               { name: 'Women', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800&auto=format&fit=crop', href: '/women' },
               { name: 'Men', image: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=800&auto=format&fit=crop', href: '/men' },
-              { name: 'Kids', image: 'https://images.unsplash.com/photo-1514090458221-65bb69af63e6?q=80&w=800&auto=format&fit=crop', href: '/kids' },
+              { name: 'Kids', image: 'https://images.unsplash.com/photo-1519457431-7571f018272b?q=80&w=800&auto=format&fit=crop', href: '/kids' },
             ].map((cat, idx) => (
               <Link key={cat.name} to={cat.href} className="group relative h-[500px] overflow-hidden">
                 <img
