@@ -30,4 +30,6 @@ export interface BlogPost {
   image: string;
   date: string;
   slug: string;
+  metaTitle?: string;
+  metaDescription?: string;
 }

@@ -69,6 +69,20 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   return data as Testimonial[];
 }
 
+function mapBlogPost(row: Record<string, any>): BlogPost {
+  return {
+    id: row.id,
+    title: row.title,
+    excerpt: row.excerpt,
+    content: row.content,
+    image: row.image,
+    date: row.date,
+    slug: row.slug,
+    metaTitle: row.meta_title ?? row.metaTitle,
+    metaDescription: row.meta_description ?? row.metaDescription,
+  } as BlogPost;
+}
+
 export async function getBlogPosts(): Promise<BlogPost[]> {
   const { data, error } = await supabase
     .from('blog_posts')
@@ -79,7 +93,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     console.error('Error fetching blog posts:', error);
     return [];
   }
-  return data as BlogPost[];
+  return data.map(mapBlogPost);
 }
 
 // ==========================================
@@ -128,11 +142,31 @@ export async function deleteProduct(id: string) {
 }
 
 export async function createBlogPost(postData: Omit<BlogPost, 'id'>) {
-  return supabase.from('blog_posts').insert([postData]);
+  const dbData = {
+    title: postData.title,
+    slug: postData.slug,
+    date: postData.date,
+    content: postData.content,
+    excerpt: postData.excerpt,
+    image: postData.image,
+    meta_title: postData.metaTitle,
+    meta_description: postData.metaDescription,
+  };
+  return supabase.from('blog_posts').insert([dbData]);
 }
 
 export async function updateBlogPost(id: string, postData: Partial<BlogPost>) {
-  return supabase.from('blog_posts').update(postData).eq('id', id);
+  const dbData: any = {};
+  if (postData.title !== undefined) dbData.title = postData.title;
+  if (postData.slug !== undefined) dbData.slug = postData.slug;
+  if (postData.date !== undefined) dbData.date = postData.date;
+  if (postData.content !== undefined) dbData.content = postData.content;
+  if (postData.excerpt !== undefined) dbData.excerpt = postData.excerpt;
+  if (postData.image !== undefined) dbData.image = postData.image;
+  if (postData.metaTitle !== undefined) dbData.meta_title = postData.metaTitle;
+  if (postData.metaDescription !== undefined) dbData.meta_description = postData.metaDescription;
+
+  return supabase.from('blog_posts').update(dbData).eq('id', id);
 }
 
 export async function deleteBlogPost(id: string) {

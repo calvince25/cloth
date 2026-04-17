@@ -18,6 +18,8 @@ export default function Blogs() {
     content: '',
     excerpt: '',
     image: '',
+    metaTitle: '',
+    metaDescription: '',
   });
 
   useEffect(() => {
@@ -41,6 +43,8 @@ export default function Blogs() {
         content: blog.content,
         excerpt: blog.excerpt,
         image: blog.image || '',
+        metaTitle: blog.metaTitle || '',
+        metaDescription: blog.metaDescription || '',
       });
     } else {
       setEditingId(null);
@@ -51,6 +55,8 @@ export default function Blogs() {
         content: '',
         excerpt: '',
         image: '',
+        metaTitle: '',
+        metaDescription: '',
       });
     }
     setIsModalOpen(true);
@@ -72,6 +78,8 @@ export default function Blogs() {
       content: formData.content,
       excerpt: formData.excerpt,
       image: formData.image,
+      metaTitle: formData.metaTitle,
+      metaDescription: formData.metaDescription,
     };
 
     if (editingId) {
@@ -181,8 +189,19 @@ export default function Blogs() {
                   <Input type="date" required value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} className="rounded-none"/>
                 </div>
                 <div className="md:col-span-2">
+                  <label className="block text-xs uppercase tracking-widest font-bold mb-2">SEO Meta Title (Optional)</label>
+                  <Input value={formData.metaTitle} onChange={e => setFormData({...formData, metaTitle: e.target.value})} className="rounded-none"/>
+                  <p className="text-xs text-gray-400 mt-1">Leave blank to use the article Title.</p>
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-xs uppercase tracking-widest font-bold mb-2">SEO Meta Description (Optional)</label>
+                  <Input value={formData.metaDescription} onChange={e => setFormData({...formData, metaDescription: e.target.value})} className="rounded-none"/>
+                  <p className="text-xs text-gray-400 mt-1">Leave blank to use the Short Excerpt.</p>
+                </div>
+                <div className="md:col-span-2">
                   <label className="block text-xs uppercase tracking-widest font-bold mb-2">Header Image / Thumbnail (URL)</label>
-                  <Input value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} className="rounded-none"/>
+                  <Input required value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} className="rounded-none"/>
+                  <p className="text-xs text-gray-400 mt-1">Required. Paste a high-quality image URL.</p>
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-xs uppercase tracking-widest font-bold mb-2">Short Excerpt</label>
@@ -192,11 +211,19 @@ export default function Blogs() {
               </div>
               
               <div>
-                <label className="block text-xs uppercase tracking-widest font-bold mb-2">Main Content</label>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="block text-xs uppercase tracking-widest font-bold">Main Content</label>
+                  <div className="flex gap-2">
+                    <Button type="button" variant="outline" size="sm" onClick={() => setFormData({...formData, content: formData.content + '\n<h2>Heading 2</h2>\n'})} className="h-7 text-xs">H2</Button>
+                    <Button type="button" variant="outline" size="sm" onClick={() => setFormData({...formData, content: formData.content + '\n<h3>Heading 3</h3>\n'})} className="h-7 text-xs">H3</Button>
+                    <Button type="button" variant="outline" size="sm" onClick={() => setFormData({...formData, content: formData.content + '<b>bold text</b>'})} className="h-7 text-xs font-bold">B</Button>
+                    <Button type="button" variant="outline" size="sm" onClick={() => setFormData({...formData, content: formData.content + '\n<ul>\n  <li>Bullet item</li>\n</ul>\n'})} className="h-7 text-xs">List</Button>
+                  </div>
+                </div>
                 <textarea 
                   required className="w-full min-h-[300px] border border-gray-200 p-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary leading-relaxed font-mono"
                   value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})}
-                  placeholder="Support simple text formatting. Use paragraphs."
+                  placeholder="Support simple HTML tags for professional formatting (<h2>, <b>, <ul>). Click the buttons above to insert formatting at the end."
                 />
               </div>
 
