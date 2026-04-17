@@ -42,14 +42,16 @@ export default function Contacts() {
   }
 
   const markAsRead = async (id: string, currentlyRead: boolean) => {
-    await updateContactStatus(id, !currentlyRead);
+    const { error } = await updateContactStatus(id, !currentlyRead);
+    if (error) alert('Error updating status: ' + error.message);
     await fetchContacts();
   };
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this message?')) {
       setLoading(true);
-      await deleteContact(id);
+      const { error } = await deleteContact(id);
+      if (error) alert('Error deleting message: ' + error.message);
       await fetchContacts();
     }
   };

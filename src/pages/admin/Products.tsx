@@ -108,11 +108,13 @@ export default function Products() {
         trending: formData.trending,
       };
 
+      let res;
       if (editingId) {
-        await updateProduct(editingId, payload);
+        res = await updateProduct(editingId, payload);
       } else {
-        await createProduct(payload as unknown as Omit<Product, 'id'>);
+        res = await createProduct(payload as unknown as Omit<Product, 'id'>);
       }
+      if (res.error) throw res.error;
 
       setIsModalOpen(false);
       await fetchProducts();
@@ -127,14 +129,16 @@ export default function Products() {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       setLoading(true);
-      await deleteProduct(id);
+      const { error } = await deleteProduct(id);
+      if (error) alert('Error deleting product: ' + error.message);
       await fetchProducts();
     }
   };
 
   const toggleTrending = async (id: string, currentStatus: boolean) => {
     setLoading(true);
-    await updateProduct(id, { trending: !currentStatus });
+    const { error } = await updateProduct(id, { trending: !currentStatus });
+    if (error) alert('Error updating product: ' + error.message);
     await fetchProducts();
   };
 

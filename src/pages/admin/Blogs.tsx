@@ -82,20 +82,27 @@ export default function Blogs() {
       metaDescription: formData.metaDescription,
     };
 
+    let res;
     if (editingId) {
-      await updateBlogPost(editingId, payload);
+      res = await updateBlogPost(editingId, payload);
     } else {
-      await createBlogPost(payload as unknown as Omit<BlogPost, 'id'>);
+      res = await createBlogPost(payload as unknown as Omit<BlogPost, 'id'>);
     }
 
-    setIsModalOpen(false);
+    if (res.error) {
+      console.error(res.error);
+      alert('Error saving post: ' + res.error.message);
+    } else {
+      setIsModalOpen(false);
+    }
     await fetchBlogs();
   };
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
       setLoading(true);
-      await deleteBlogPost(id);
+      const { error } = await deleteBlogPost(id);
+      if (error) alert('Error deleting post: ' + error.message);
       await fetchBlogs();
     }
   };

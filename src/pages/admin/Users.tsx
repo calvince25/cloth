@@ -16,21 +16,24 @@ export default function Users() {
 
   async function fetchUsers() {
     setLoading(true);
-    const { data } = await getUsers();
+    const { data, error } = await getUsers();
+    if (error) alert('Error loading users: ' + error.message);
     if (data) setUsers(data);
     setLoading(false);
   }
 
   const handleRoleChange = async (id: string, newRole: 'admin' | 'pending' | 'user') => {
     setLoading(true);
-    await updateUserRole(id, newRole);
+    const { error } = await updateUserRole(id, newRole);
+    if (error) alert('Error updating role: ' + error.message);
     await fetchUsers();
   };
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this user? They will lose access.')) {
       setLoading(true);
-      await deleteUser(id);
+      const { error } = await deleteUser(id);
+      if (error) alert('Error deleting user: ' + error.message);
       await fetchUsers();
     }
   };
