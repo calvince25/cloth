@@ -18,14 +18,9 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // If already authenticated and approved admin, redirect
-  if (user && role === 'admin') {
+  // If already authenticated, redirect
+  if (user) {
     return <Navigate to="/admin/dashboard" replace />;
-  }
-  
-  // If authenticated but pending, redirect to trigger the AdminRoute blocked screen
-  if (user && role === 'pending') {
-    return <Navigate to="/admin" replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

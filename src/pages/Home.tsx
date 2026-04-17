@@ -55,7 +55,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="max-w-2xl text-white"
           >
-            <span className="uppercase tracking-[0.3em] text-sm font-bold mb-4 block">New Collection 2025</span>
+
             <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight">
               Nairobi’s Favourite Online Clothing Store
             </h1>
@@ -125,7 +125,7 @@ export default function Home() {
             {[
               { name: 'Women', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800&auto=format&fit=crop', href: '/women' },
               { name: 'Men', image: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=800&auto=format&fit=crop', href: '/men' },
-              { name: 'Kids', image: 'https://images.unsplash.com/photo-1519457431-7571f018272b?q=80&w=800&auto=format&fit=crop', href: '/kids' },
+              { name: 'Kids', image: 'https://images.unsplash.com/photo-1514432324607-a09d9b62fb96?q=80&w=800&auto=format&fit=crop', href: '/kids' },
             ].map((cat, idx) => (
               <Link key={cat.name} to={cat.href} className="group relative h-[500px] overflow-hidden">
                 <img
