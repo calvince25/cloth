@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProducts, createProduct, updateProduct, deleteProduct } from '@/lib/supabase';
+import { supabase, getProducts, createProduct, updateProduct, deleteProduct } from '@/lib/supabase';
 import { Product } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
