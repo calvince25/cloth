@@ -20,13 +20,14 @@ export default function Products() {
     category: 'women',
     subCategory: '',
     description: '',
-    images: '',
     sizes: '',
     inStock: true,
     isNew: false,
     isSale: false,
     trending: false,
   });
+  const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   useEffect(() => {
     fetchProducts();
@@ -49,21 +50,23 @@ export default function Products() {
         category: product.category,
         subCategory: product.subCategory,
         description: product.description,
-        images: product.images.join(', '),
         sizes: product.sizes.join(', '),
         inStock: product.inStock,
         isNew: product.isNew,
         isSale: product.isSale,
         trending: product.trending,
       });
+      setExistingImages(product.images || []);
     } else {
       setEditingId(null);
       setFormData({
         name: '', price: '', salePrice: '', category: 'women', subCategory: '',
-        description: '', images: '', sizes: 'S, M, L, XL', inStock: true,
+        description: '', sizes: 'S, M, L, XL', inStock: true,
         isNew: false, isSale: false, trending: false,
       });
+      setExistingImages([]);
     }
+    setImageFiles([]);
     setIsModalOpen(true);
   };
 
@@ -71,29 +74,54 @@ export default function Products() {
     e.preventDefault();
     setLoading(true);
     
-    const payload = {
-      name: formData.name,
-      price: Number(formData.price),
-      salePrice: formData.salePrice ? Number(formData.salePrice) : undefined,
-      category: formData.category as 'women'|'men'|'kids',
-      subCategory: formData.subCategory,
-      description: formData.description,
-      images: formData.images.split(',').map(s => s.trim()).filter(Boolean),
-      sizes: formData.sizes.split(',').map(s => s.trim()).filter(Boolean),
-      inStock: formData.inStock,
-      isNew: formData.isNew,
-      isSale: formData.isSale,
-      trending: formData.trending,
-    };
+    try {
+      const uploadedUrls: string[] = [];
 
-    if (editingId) {
-      await updateProduct(editingId, payload);
-    } else {
-      await createProduct(payload as unknown as Omit<Product, 'id'>);
+      // Upload new physical files
+      for (const file of imageFiles) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
+        const filePath = `product-images/${fileName}`;
+        
+        // This requires a bucket named "products" configured as Public
+        const { error: uploadError } = await supabase.storage.from('products').upload(filePath, file);
+        if (uploadError) throw uploadError;
+        
+        const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(filePath);
+        uploadedUrls.push(publicUrl);
+      }
+
+      const finalImages = [...existingImages, ...uploadedUrls];
+
+      const payload = {
+        name: formData.name,
+        price: Number(formData.price),
+        salePrice: formData.salePrice ? Number(formData.salePrice) : undefined,
+        category: formData.category as 'women'|'men'|'kids',
+        subCategory: formData.subCategory,
+        description: formData.description,
+        images: finalImages,
+        sizes: formData.sizes.split(',').map(s => s.trim()).filter(Boolean),
+        inStock: formData.inStock,
+        isNew: formData.isNew,
+        isSale: formData.isSale,
+        trending: formData.trending,
+      };
+
+      if (editingId) {
+        await updateProduct(editingId, payload);
+      } else {
+        await createProduct(payload as unknown as Omit<Product, 'id'>);
+      }
+
+      setIsModalOpen(false);
+      await fetchProducts();
+    } catch (err: any) {
+      console.error('Error saving product:', err);
+      alert('Failed to save product/upload image. Ensure the "products" storage bucket is created in Supabase with Public Access allowed. Error: ' + err.message);
+    } finally {
+      setLoading(false);
     }
-
-    setIsModalOpen(false);
-    await fetchProducts();
   };
 
   const handleDelete = async (id: string) => {
@@ -231,9 +259,34 @@ export default function Products() {
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-widest font-bold mb-2">Image URLs (comma separated)</label>
-                <Input required value={formData.images} onChange={e => setFormData({...formData, images: e.target.value})} className="rounded-none"/>
-                <p className="text-xs text-gray-400 mt-1">Paste Unsplash/Cloudinary URLs here.</p>
+                <label className="block text-xs uppercase tracking-widest font-bold mb-2">Images (File Uploads)</label>
+                
+                {existingImages.length > 0 && (
+                  <div className="flex gap-2 mb-4 overflow-x-auto py-2">
+                    {existingImages.map((img, i) => (
+                      <div key={i} className="relative shrink-0 group">
+                        <img src={img} alt="Product" className="w-20 h-24 object-cover border border-gray-200" />
+                        <button 
+                          type="button" 
+                          onClick={() => setExistingImages(existingImages.filter((_, idx) => idx !== i))}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-100 transition-opacity"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <Input 
+                  type="file" 
+                  multiple 
+                  accept="image/*"
+                  onChange={e => setImageFiles(Array.from(e.target.files || []))} 
+                  className="rounded-none cursor-pointer h-12 pt-3"
+                  required={existingImages.length === 0}
+                />
+                <p className="text-xs text-secondary mt-1">Select product photos from your computer.</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-100 pt-6">
