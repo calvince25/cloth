@@ -145,23 +145,7 @@ export default function Shop({ category, filter }: ShopProps) {
                 ))}
               </div>
 
-              <Separator className="my-8" />
 
-              <h3 className="text-sm uppercase tracking-widest font-bold mb-6">Price Range</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" id="p1" className="accent-primary" />
-                  <label htmlFor="p1" className="text-sm text-gray-600">Under KES 3,000</label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" id="p2" className="accent-primary" />
-                  <label htmlFor="p2" className="text-sm text-gray-600">KES 3,000 – KES 7,000</label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" id="p3" className="accent-primary" />
-                  <label htmlFor="p3" className="text-sm text-gray-600">Over KES 7,000</label>
-                </div>
-              </div>
             </div>
           </aside>
 
