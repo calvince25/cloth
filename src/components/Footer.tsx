@@ -68,7 +68,12 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-          <p>© 2025 Buver Kenya. All rights reserved.</p>
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <p>© 2025 Buver Kenya. All rights reserved.</p>
+            <p className="text-[10px] uppercase tracking-widest">
+              Designed by <a href="https://growthlab.co.ke" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors font-bold">growthlab.co.ke</a>
+            </p>
+          </div>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white">Privacy Policy</a>
             <a href="#" className="hover:text-white">Terms of Service</a>
