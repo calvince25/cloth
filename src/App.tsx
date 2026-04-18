@@ -21,6 +21,7 @@ import WishlistLeads from './pages/admin/WishlistLeads';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
+import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -32,6 +33,7 @@ export default function App() {
       <AuthProvider>
         <CartProvider>
           <WishlistProvider>
+            <Analytics />
             <Router>
               <ScrollToTop />
               <div className="min-h-screen flex flex-col">
