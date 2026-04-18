@@ -28,7 +28,7 @@ const CATEGORY_CONFIG = {
   kids: {
     title: "Kids' Collection",
     subtitle: 'Fun, durable, and stylish clothing to keep your little ones looking their best.',
-    image: 'https://images.unsplash.com/photo-1514090458221-65bb69af63e6',
+    image: '/images/kids-collection.png',
   },
   sale: {
     title: 'Sale',

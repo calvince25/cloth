@@ -126,7 +126,7 @@ export default function Home() {
             {[
               { name: 'Women', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b', href: '/women' },
               { name: 'Men', image: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891', href: '/men' },
-              { name: 'Kids', image: 'https://images.unsplash.com/photo-1514432324607-a09d9b62fb96', href: '/kids' },
+              { name: 'Kids', image: '/images/kids-collection.png', href: '/kids' },
             ].map((cat, idx) => (
               <Link key={cat.name} to={cat.href} className="group relative h-[500px] overflow-hidden">
                 <img
