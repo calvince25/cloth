@@ -7,7 +7,7 @@ import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Loader2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, getImageUrl } from '@/lib/utils';
 
 interface ShopProps {
   category?: 'women' | 'men' | 'kids';
@@ -18,32 +18,32 @@ const CATEGORY_CONFIG = {
   women: {
     title: "Women's Collection",
     subtitle: 'Explore our curated selection of premium womenswear  tailored for every style.',
-    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b',
   },
   men: {
     title: "Men's Collection",
     subtitle: 'Sharp, sophisticated menswear designed for the modern Nairobi gentleman.',
-    image: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891',
   },
   kids: {
     title: "Kids' Collection",
     subtitle: 'Fun, durable, and stylish clothing to keep your little ones looking their best.',
-    image: 'https://images.unsplash.com/photo-1514090458221-65bb69af63e6?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1514090458221-65bb69af63e6',
   },
   sale: {
     title: 'Sale',
     subtitle: 'Incredible deals on premium fashion. Limited time — limited stock.',
-    image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da',
   },
   new: {
     title: 'New Arrivals',
     subtitle: 'Fresh pieces just landed. Be the first to own the latest trends in Nairobi.',
-    image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f',
   },
   all: {
     title: 'All Collection',
     subtitle: 'Browse our full range of premium fashion for women, men, and kids.',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64',
   },
 };
 
@@ -93,7 +93,7 @@ export default function Shop({ category, filter }: ShopProps) {
       {/* Hero — edge to edge */}
       <section className="relative h-[60vh] w-full overflow-hidden">
         <img
-          src={config.image}
+          src={getImageUrl(config.image, 1800, 75)}
           alt={pageTitle}
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"

@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Product } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { cn, getImageUrl } from '@/lib/utils';
 
 interface ProductCardProps {
   product: Product;
@@ -36,7 +37,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 rounded-sm">
         <Link to={`/product/${product.id}`}>
           <img
-            src={`${product.images[0]}&q=60&w=400`}
+            src={getImageUrl(product.images[0], 600)}
             alt={product.name}
             className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
             referrerPolicy="no-referrer"

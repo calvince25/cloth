@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import ProductCard from '@/components/ProductCard';
-import { cn } from '@/lib/utils';
+import { cn, getImageUrl } from '@/lib/utils';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -103,7 +103,7 @@ Please confirm availability.`)}`;
                   )}
                   onClick={() => setActiveImage(idx)}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  <img src={getImageUrl(img, 200)} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                 </button>
               ))}
             </div>
@@ -112,7 +112,7 @@ Please confirm availability.`)}`;
                 key={activeImage}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                src={product.images[activeImage]}
+                src={getImageUrl(product.images[activeImage], 1200)}
                 alt={product.name}
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"

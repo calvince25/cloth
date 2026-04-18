@@ -5,6 +5,7 @@ import { Loader2, Clock, Tag } from 'lucide-react';
 import { motion } from 'motion/react';
 import { getBlogPosts } from '@/lib/supabase';
 import { BlogPost } from '@/types';
+import { getImageUrl } from '@/lib/utils';
 
 const CATEGORY_IMAGES: Record<string, string> = {
   fashion: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800&auto=format&fit=crop',
@@ -36,7 +37,7 @@ export default function Blog() {
       {/* Hero — edge to edge */}
       <section className="relative h-[65vh] w-full overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=60&w=1600&auto=format&fit=crop"
+          src={getImageUrl("https://images.unsplash.com/photo-1512436991641-6745cdb1723f", 1600, 75)}
           alt="Buver Fashion Blog"
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
@@ -81,7 +82,7 @@ export default function Blog() {
                 <Link to={`/blog/${posts[0].slug}`} className="grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
                   <div className="aspect-[16/10] lg:aspect-auto lg:h-[480px] overflow-hidden">
                     <img
-                      src={`${posts[0].image}&q=60&w=800`}
+                      src={getImageUrl(posts[0].image, 1200)}
                       alt={posts[0].title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       referrerPolicy="no-referrer"
@@ -128,7 +129,7 @@ export default function Blog() {
                     >
                       <Link to={`/blog/${post.slug}`} className="block aspect-[16/10] overflow-hidden mb-6">
                         <img
-                          src={`${post.image || CATEGORY_IMAGES.default}&q=60&w=500`}
+                          src={getImageUrl(post.image || CATEGORY_IMAGES.default, 800)}
                           alt={post.title}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                           referrerPolicy="no-referrer"
@@ -164,7 +165,7 @@ export default function Blog() {
       {/* Bottom full-width banner */}
       <section className="w-full h-[40vh] overflow-hidden relative">
         <img
-          src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=60&w=1600&auto=format&fit=crop"
+          src={getImageUrl("https://images.unsplash.com/photo-1483985988355-763728e1935b", 1600, 70)}
           alt="Explore the collection"
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"

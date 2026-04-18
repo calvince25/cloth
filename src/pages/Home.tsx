@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/ProductCard';
 import { getProducts, getTestimonials } from '@/lib/supabase';
 import { Product, Testimonial } from '@/types';
+import { getImageUrl } from '@/lib/utils';
 
 export default function Home() {
   const [trendingProducts, setTrendingProducts] = useState<Product[]>([]);
@@ -38,7 +39,7 @@ export default function Home() {
       <section className="relative h-[85vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=60&w=1200&auto=format&fit=crop"
+            src={getImageUrl("https://images.unsplash.com/photo-1490481651871-ab68de25d43d", 1600, 75)}
             alt="Hero Background"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
@@ -123,13 +124,13 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: 'Women', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800&auto=format&fit=crop', href: '/women' },
-              { name: 'Men', image: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=800&auto=format&fit=crop', href: '/men' },
-              { name: 'Kids', image: 'https://images.unsplash.com/photo-1514432324607-a09d9b62fb96?q=80&w=800&auto=format&fit=crop', href: '/kids' },
+              { name: 'Women', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b', href: '/women' },
+              { name: 'Men', image: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891', href: '/men' },
+              { name: 'Kids', image: 'https://images.unsplash.com/photo-1514432324607-a09d9b62fb96', href: '/kids' },
             ].map((cat, idx) => (
               <Link key={cat.name} to={cat.href} className="group relative h-[500px] overflow-hidden">
                 <img
-                  src={`${cat.image}&q=60&w=600`}
+                  src={getImageUrl(cat.image, 800)}
                   alt={cat.name}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   referrerPolicy="no-referrer"
@@ -220,7 +221,7 @@ export default function Home() {
             </motion.div>
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=60&w=800&auto=format&fit=crop"
+                src={getImageUrl("https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a", 800)}
                 alt="Shopping Experience"
                 className="w-full h-[600px] object-cover rounded-sm"
                 referrerPolicy="no-referrer"
