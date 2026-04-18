@@ -33,3 +33,17 @@ export interface BlogPost {
   metaTitle?: string;
   metaDescription?: string;
 }
+
+export interface CartItem extends Product {
+  selectedSize: string;
+  quantity: number;
+}
+
+export interface WishlistLead {
+  id?: string;
+  product_id: string;
+  customer_name: string;
+  customer_phone: string;
+  created_at?: string;
+  read?: boolean;
+}

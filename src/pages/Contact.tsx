@@ -65,7 +65,7 @@ export default function Contact() {
       <div className="container mx-auto px-4 -mt-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: MessageCircle, title: 'WhatsApp', sub: 'Fastest response', value: 'Chat Now', href: 'https://wa.me/254700000000', color: '#25D366' },
+            { icon: MessageCircle, title: 'WhatsApp', sub: 'Fastest response', value: 'Chat Now', href: 'https://wa.me/254740791756', color: '#25D366' },
             { icon: Phone, title: 'Call Us', sub: 'Mon–Sat, 9am–6pm', value: '+254 700 000 000', href: 'tel:+254700000000', color: '' },
             { icon: Mail, title: 'Email Us', sub: 'General inquiries', value: 'hello@buver.co.ke', href: 'mailto:hello@buver.co.ke', color: '' },
             { icon: Instagram, title: 'Instagram', sub: 'Follow for new drops', value: '@buver.ke', href: '#', color: '' },
@@ -159,7 +159,7 @@ export default function Contact() {
                 Send Message
               </Button>
               <p className="text-center text-sm text-gray-400">Or for fastest response, chat with us directly on WhatsApp</p>
-              <a href="https://wa.me/254700000000" target="_blank" rel="noopener noreferrer" className="block w-full">
+              <a href="https://wa.me/254740791756" target="_blank" rel="noopener noreferrer" className="block w-full">
                 <Button type="button" variant="outline" className="w-full h-14 rounded-none border-[#25D366] text-[#25D366] hover:bg-[#25D366] hover:text-white uppercase tracking-widest">
                   <MessageCircle className="w-5 h-5 mr-2" /> Open WhatsApp Chat
                 </Button>

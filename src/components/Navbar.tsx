@@ -3,6 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { Search, ShoppingBag, Heart, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
+import CartDrawer from './CartDrawer';
 
 const NAV_LINKS = [
   { name: 'Women', href: '/women' },
@@ -21,6 +24,9 @@ const SECONDARY_LINKS = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
   const location = useLocation();
 
   useEffect(() => {
@@ -108,20 +114,30 @@ export default function Navbar() {
             <Button variant="ghost" size="icon" className="hidden sm:flex">
               <Search className="w-5 h-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="hidden sm:flex">
+            <Button variant="ghost" size="icon" className="hidden sm:flex relative">
               <Heart className="w-5 h-5" />
-            </Button>
-            <Link to="/shop">
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingBag className="w-5 h-5" />
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  0
+              {wishlistCount > 0 && (
+                <span className="absolute top-1 right-1 bg-primary text-white text-[8px] font-bold w-3 h-3 rounded-full flex items-center justify-center">
+                  {wishlistCount}
                 </span>
-              </Button>
-            </Link>
+              )}
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative"
+              onClick={() => setCartOpen(true)}
+            >
+              <ShoppingBag className="w-5 h-5" />
+              <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            </Button>
           </div>
         </div>
       </header>
+
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
       {/* Mobile Drawer */}
       {mobileOpen && (

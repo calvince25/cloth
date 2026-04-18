@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ShoppingCart, Heart, MessageCircle, Truck, RefreshCw, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
+import { ShoppingBag, Heart, MessageCircle, Truck, RefreshCw, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { getProductById, getProducts } from '@/lib/supabase';
 import { Product } from '@/types';
@@ -10,6 +10,10 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import ProductCard from '@/components/ProductCard';
 import { cn, getImageUrl } from '@/lib/utils';
+import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
+import SizeGuide from '@/components/SizeGuide';
+import WishlistLeadPopup from '@/components/WishlistLeadPopup';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +22,11 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+  const [leadPopupOpen, setLeadPopupOpen] = useState(false);
+
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist, hasCapturedLead } = useWishlist();
 
   useEffect(() => {
     async function loadProductData() {
@@ -64,14 +73,23 @@ export default function ProductDetail() {
     minimumFractionDigits: 0,
   }).format(product.price);
 
-  const whatsappUrl = `https://wa.me/254700000000?text=${encodeURIComponent(`Hello Buver! I would like to order:
-🛍️ *Product:* ${product.name}
-📏 *Size:* ${selectedSize || 'Not specified'}
-💰 *Price:* ${formattedPrice}
-🔗 *Link:* ${window.location.href}
-🖼️ *Image:* ${product.images[0]}
+  const handleWishlist = () => {
+    toggleWishlist(product);
+    if (!isInWishlist(product.id) && !hasCapturedLead) {
+      setLeadPopupOpen(true);
+    }
+  };
 
-Please confirm availability.`)}`;
+  const handleAddToCart = () => {
+    if (!selectedSize) return;
+    addToCart({
+      ...product,
+      selectedSize,
+      quantity: 1
+    });
+  };
+
+  const directWhatsappUrl = `https://wa.me/254740791756?text=${encodeURIComponent(`Hello Buver Nairobi! 🛍️\n\nI'd like to order:\n*${product.name}*\nSize: ${selectedSize || 'Not specified'}\nPrice: ${formattedPrice}\n\n*Product Description:* \n${product.description}\n\nLink: ${window.location.href}`)}`;
 
   return (
     <div className="pb-20 pt-24">
@@ -145,7 +163,12 @@ Please confirm availability.`)}`;
             <div className="mb-8">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-sm uppercase tracking-widest font-bold">Select Size</h3>
-                <button className="text-xs underline text-gray-500">Size Guide</button>
+                <button 
+                  onClick={() => setSizeGuideOpen(true)}
+                  className="text-xs underline text-gray-500"
+                >
+                  Size Guide
+                </button>
               </div>
               <div className="flex flex-wrap gap-3">
                 {product.sizes.map(size => (
@@ -167,20 +190,33 @@ Please confirm availability.`)}`;
 
             {/* Actions */}
             <div className="flex flex-col gap-4 mb-8">
-              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="w-full">
+              <a href={directWhatsappUrl} target="_blank" rel="noopener noreferrer" className="w-full">
                 <Button 
                   className="w-full bg-primary hover:bg-primary/90 text-white rounded-none h-14 text-lg uppercase tracking-widest"
                   disabled={!selectedSize}
                 >
-                  <MessageCircle className="w-5 h-5 mr-2" /> Confirm Order via WhatsApp
+                  <MessageCircle className="w-5 h-5 mr-2" /> Buy Now on WhatsApp
                 </Button>
               </a>
               <div className="flex gap-4">
-                <Button variant="outline" className="flex-grow h-14 rounded-none border-gray-200 uppercase tracking-widest">
-                  <Heart className="w-5 h-5 mr-2" /> Wishlist
+                <Button 
+                  variant="outline" 
+                  onClick={handleWishlist}
+                  className={cn(
+                    "flex-grow h-14 rounded-none border-gray-200 uppercase tracking-widest transition-all",
+                    isInWishlist(product.id) && "bg-primary text-white border-primary"
+                  )}
+                >
+                  <Heart className={cn("w-5 h-5 mr-2", isInWishlist(product.id) && "fill-white")} /> 
+                  {isInWishlist(product.id) ? 'Saved' : 'Wishlist'}
                 </Button>
-                <Button variant="outline" className="h-14 w-14 rounded-none border-gray-200">
-                  <ShoppingCart className="w-6 h-6" />
+                <Button 
+                  variant="outline" 
+                  onClick={handleAddToCart}
+                  disabled={!selectedSize}
+                  className="h-14 w-14 rounded-none border-gray-200 hover:bg-secondary hover:text-white transition-all disabled:opacity-50"
+                >
+                  <ShoppingBag className="w-6 h-6" />
                 </Button>
               </div>
             </div>
@@ -204,9 +240,8 @@ Please confirm availability.`)}`;
             {/* Description */}
             <div className="mt-12">
               <h3 className="text-sm uppercase tracking-widest font-bold mb-4">Description</h3>
-              <p className="text-gray-600 leading-relaxed">
-                {product.description} Our {product.name} is designed with the Nairobi lifestyle in mind. 
-                Crafted from premium materials, it offers both comfort and style for any occasion.
+              <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
+                {product.description}
               </p>
             </div>
           </div>
@@ -227,6 +262,16 @@ Please confirm availability.`)}`;
           </div>
         )}
       </div>
+
+      <SizeGuide 
+        isOpen={sizeGuideOpen} 
+        onClose={() => setSizeGuideOpen(false)} 
+        category={product.category} 
+      />
+      <WishlistLeadPopup 
+        isOpen={leadPopupOpen} 
+        onClose={() => setLeadPopupOpen(false)} 
+      />
     </div>
   );
 }
