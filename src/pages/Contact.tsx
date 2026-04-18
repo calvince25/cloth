@@ -14,18 +14,24 @@ export default function Contact() {
     e.preventDefault();
     setStatus('loading');
     
-    const { error } = await submitContact({
-      name: formData.name,
-      contact_info: formData.info,
-      subject: formData.subject,
-      message: formData.message,
-    });
+    try {
+      const { error } = await submitContact({
+        name: formData.name,
+        contact_info: formData.info,
+        subject: formData.subject,
+        message: formData.message,
+      });
 
-    if (error) {
+      if (error) {
+        console.error('Submission Error:', error);
+        setStatus('error');
+      } else {
+        setStatus('success');
+        setFormData({ name: '', info: '', subject: '', message: '' });
+      }
+    } catch (err) {
+      console.error('Submission Exception:', err);
       setStatus('error');
-    } else {
-      setStatus('success');
-      setFormData({ name: '', info: '', subject: '', message: '' });
     }
   };
 
@@ -66,7 +72,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             { icon: MessageCircle, title: 'WhatsApp', sub: 'Fastest response', value: 'Chat Now', href: 'https://wa.me/254740791756', color: '#25D366' },
-            { icon: Phone, title: 'Call Us', sub: 'Mon–Sat, 9am–6pm', value: '+254 700 000 000', href: 'tel:+254700000000', color: '' },
+            { icon: Phone, title: 'Call Us', sub: 'Mon–Sat, 9am–6pm', value: '+254740791756', href: 'tel:+254740791756', color: '' },
             { icon: Mail, title: 'Email Us', sub: 'General inquiries', value: 'hello@buver.co.ke', href: 'mailto:hello@buver.co.ke', color: '' },
             { icon: Instagram, title: 'Instagram', sub: 'Follow for new drops', value: '@buver.ke', href: '#', color: '' },
           ].map((card) => (
